@@ -6,10 +6,11 @@ import com.nhohantu.tcbookbe.common.model.builder.ResponseDTO;
 import com.nhohantu.tcbookbe.common.model.entity.Warrior;
 import com.nhohantu.tcbookbe.common.model.enums.StatusCodeEnum;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/cms/warriors")
@@ -18,16 +19,17 @@ public class WarriorController {
     private final WarriorService warriorService;
 
     @GetMapping
-    public ResponseEntity<ResponseDTO<List<Warrior>>> getAllWarriors(
+    public ResponseEntity<ResponseDTO<Page<Warrior>>> getAllWarriors(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String rank,
-            @RequestParam(required = false) String status) {
-        List<Warrior> warriors = warriorService.getWarriorsWithFilters(name, rank, status);
+            @RequestParam(required = false) String status,
+            @PageableDefault(size = 10) Pageable pageable) {
+        Page<Warrior> warriors = warriorService.getWarriorsWithFilters(name, rank, status, pageable);
         return ResponseBuilder.okResponse("Get warriors success", warriors, StatusCodeEnum.SUCCESS2000);
     }
 
     @PostMapping
-    public ResponseEntity<ResponseDTO<Warrior>> createWarrior(@RequestBody Warrior warrior) {
+    public ResponseEntity<ResponseDTO<Warrior>> createWarrior(@jakarta.validation.Valid @RequestBody Warrior warrior) {
         return ResponseBuilder.okResponse("Create warrior success", warriorService.createWarrior(warrior),
                 StatusCodeEnum.SUCCESS2000);
     }
@@ -39,7 +41,8 @@ public class WarriorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDTO<Warrior>> updateWarrior(@PathVariable String id, @RequestBody Warrior warrior) {
+    public ResponseEntity<ResponseDTO<Warrior>> updateWarrior(@PathVariable String id,
+            @jakarta.validation.Valid @RequestBody Warrior warrior) {
         return ResponseBuilder.okResponse("Update warrior success", warriorService.updateWarrior(id, warrior),
                 StatusCodeEnum.SUCCESS2000);
     }
