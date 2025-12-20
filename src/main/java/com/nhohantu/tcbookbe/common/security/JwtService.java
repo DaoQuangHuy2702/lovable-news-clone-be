@@ -42,22 +42,12 @@ public class JwtService {
 
     public String generateToken(UserDetailsImpl userDetails) {
         Map<String, Object> claims = new HashMap<>();
-
-        // Lấy danh sách role name
-        List<String> roles = userDetails.getUser().getUserRoles().stream()
-                .map(userRole -> userRole.getRole().getRoleName())
-                .toList();
-
-        // Lấy danh sách permission
-        List<String> permissions = userDetails.getUser().getUserRoles().stream()
-                .flatMap(userRole -> userRole.getRole().getRolePermissions().stream())
-                .map(rp -> rp.getPermission().getPermissionName())
-                .distinct()
-                .toList();
-
-        claims.put("roles", roles);
-        claims.put("permissions", permissions);
+        
+        // Add roles and permissions if needed, for now just simple role
+        claims.put("roles", List.of(userDetails.getUser().getRole()));
         claims.put("username", userDetails.getUsername());
+        claims.put("id", userDetails.getUser().getId());
+        
         return generateToken(claims, userDetails);
     }
 

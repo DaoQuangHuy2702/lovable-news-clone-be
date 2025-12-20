@@ -2,26 +2,25 @@ spring:
   application:
     name: tc-book-be
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://localhost:3306/warrior_news
+    username: root
+    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      #      better use this ddl-auto: update than create-drop or create since it might be lost data
       ddl-auto: update
     show-sql: true
   jwt:
-    secret: ${JWT_SECRET}
-    expire: ${JWT_EXPIRE}
-    refresh: ${JWT_SECRET_REFRESH}
-    expire-refrest: ${JWT_EXPIRE_REFRESH}
+    secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+    expire: 86400000 # 1 day
+    refresh: 5367566B59703373367639792442264529482B4D6251655468576D5A71347437
+    expire-refrest: 2592000000 # 30 days
 
   devtools:
     restart:
       enabled: false
 server:
-  port: ${PORT}
+  port: 8080
   servlet:
     context-path: /api/v1
-

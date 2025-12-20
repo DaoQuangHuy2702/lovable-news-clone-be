@@ -21,4 +21,12 @@ public class LoginController {
     public ResponseEntity<ResponseDTO<LoginResponse>> authenticate(@RequestBody LoginRequest request) {
         return authenticationService.requestLogin(request);
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<ResponseDTO<com.nhohantu.tcbookbe.common.security.UserDetailsImpl>> register(
+            @RequestBody com.nhohantu.tcbookbe.common.model.dto.request.RegisterRequest request) {
+        return com.nhohantu.tcbookbe.common.model.builder.ResponseBuilder.okResponse("Register success",
+                authenticationService.signup(request),
+                com.nhohantu.tcbookbe.common.model.enums.StatusCodeEnum.SUCCESS2000);
+    }
 }

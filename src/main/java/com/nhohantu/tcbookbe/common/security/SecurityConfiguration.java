@@ -24,19 +24,19 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    private final String[] PUBLIC_ENDPOINT = {"swagger-ui/**", "/v3/api-docs/**", "/login", "/check-authority"};
+    private final String[] PUBLIC_ENDPOINT = { "swagger-ui/**", "/v3/api-docs/**", "/auth/**", "/check-authority" };
 
-    private final String[] PERMIT_FOR_DEVELOPING = {"swagger-ui/**", "/v3/api-docs/**", "/login", "/check-authority", "/user-info/create-user", "/user-info/**"};
+    private final String[] PERMIT_FOR_DEVELOPING = { "swagger-ui/**", "/v3/api-docs/**", "/check-authority",
+            "/user-info/create-user", "/user-info/**" };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(request -> request
-//                        .requestMatchers(PUBLIC_ENDPOINT).permitAll())
-//                .authorizeHttpRequests(request -> request
-//                        .anyRequest().authenticated())
-                .authorizeHttpRequests(request -> request.requestMatchers(OPTIONS).permitAll())
-                .authorizeHttpRequests(request -> request.anyRequest().permitAll())
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers(PUBLIC_ENDPOINT).permitAll()
+                        .requestMatchers(PERMIT_FOR_DEVELOPING).permitAll())
+                .authorizeHttpRequests(request -> request
+                        .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

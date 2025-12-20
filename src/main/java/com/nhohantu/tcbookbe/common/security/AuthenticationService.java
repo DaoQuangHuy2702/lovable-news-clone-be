@@ -5,9 +5,9 @@ import com.nhohantu.tcbookbe.common.model.builder.ResponseDTO;
 import com.nhohantu.tcbookbe.common.model.dto.request.LoginRequest;
 import com.nhohantu.tcbookbe.common.model.dto.request.RegisterRequest;
 import com.nhohantu.tcbookbe.common.model.dto.response.LoginResponse;
-import com.nhohantu.tcbookbe.common.model.system.UserBasicInfoModel;
+import com.nhohantu.tcbookbe.common.model.entity.Account;
 import com.nhohantu.tcbookbe.common.model.enums.StatusCodeEnum;
-import com.nhohantu.tcbookbe.common.repository.BaseUserInfoRepo;
+import com.nhohantu.tcbookbe.common.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-    private final BaseUserInfoRepo userRepository;
+    private final AccountRepository accountRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -26,20 +26,15 @@ public class AuthenticationService {
 
     private final JwtService jwtService;
 
-    public UserDetailsImpl signup(RegisterRequest request, UserBasicInfoModel userBasicInfoModel) {
-        UserBasicInfoModel user = UserBasicInfoModel.builder()
+    public UserDetailsImpl signup(RegisterRequest request) {
+        Account account = Account.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-//                .role(RoleEnum.valueOf(request.getRole()))
-                .address(request.getAddress())
-                .email(request.getEmail())
-                .primaryPhone(request.getPhone())
-//                .createdBy(userBasicInfoModel.getId())
+                .role(request.getRole())
+                .isActive(true)
                 .build();
 
-        return new UserDetailsImpl(userRepository.save(user));
+        return new UserDetailsImpl(accountRepository.save(account));
     }
 
     public UserDetailsImpl authenticate(LoginRequest request) {
@@ -50,8 +45,9 @@ public class AuthenticationService {
                 )
         );
 
-        return new UserDetailsImpl(userRepository.findByUsername(request.getUsername())
-                .orElseThrow());
+        Account account = accountRepository.findByUsername(request.getUsername())
+                .orElseThrow();
+        return new UserDetailsImpl(account);
     }
 
     public ResponseEntity<ResponseDTO<LoginResponse>> requestLogin(LoginRequest request) {

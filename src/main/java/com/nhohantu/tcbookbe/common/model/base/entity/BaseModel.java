@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import org.hibernate.annotations.UuidGenerator;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -16,8 +18,10 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public class BaseModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    @UuidGenerator
+    @Column(name = "id", length = 36)
+    private String id;
 
     @CreationTimestamp
     @Column(name = "created_at")

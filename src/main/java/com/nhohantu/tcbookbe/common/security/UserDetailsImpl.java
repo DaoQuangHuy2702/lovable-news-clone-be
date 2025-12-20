@@ -1,6 +1,6 @@
 package com.nhohantu.tcbookbe.common.security;
 
-import com.nhohantu.tcbookbe.common.model.system.*;
+import com.nhohantu.tcbookbe.common.model.entity.Account;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,29 +16,12 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDetailsImpl implements UserDetails {
-    private UserBasicInfoModel user;
+    private Account user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String ROLE_PREFIX = "ROLE_";
-        String PERM_PREFIX = "PERM_";
-        return user.getUserRoles().stream()
-                .flatMap(userRole -> {
-                    SysRoleModel role = userRole.getRole();
-
-                    // Gộp ROLE + PERMISSION
-                    Stream<GrantedAuthority> roleAuthorities = Stream.of(
-                            new SimpleGrantedAuthority(ROLE_PREFIX + role.getRoleName())
-                    );
-
-                    Stream<GrantedAuthority> permissionAuthorities = role.getRolePermissions().stream()
-                            .map(RolePermissionModel::getPermission)
-                            .map(SysPermissionModel::getPermissionName)
-                            .map(permName -> new SimpleGrantedAuthority(PERM_PREFIX + permName));
-
-                    return Stream.concat(roleAuthorities, permissionAuthorities);
-                })
-                .collect(Collectors.toSet()); // dùng Set để tránh trùng lặp
+        return Stream.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
+                .collect(Collectors.toSet());
     }
 
     @Override

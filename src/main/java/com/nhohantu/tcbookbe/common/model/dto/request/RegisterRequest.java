@@ -36,4 +36,7 @@ public class RegisterRequest {
 
     @Size(min = 9, max = 13)
     private String phone;
+
+    @Size(max = 20)
+    private String role;
 }

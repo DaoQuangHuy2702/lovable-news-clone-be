@@ -13,5 +13,5 @@ public class CmsCreateProductRequest {
     private Integer quantity;
     private Boolean active;
     private String mainImageUrl;
-    private List<Long> categoryIds;
+    private List<String> categoryIds;
 }
