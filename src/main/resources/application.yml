@@ -20,6 +20,13 @@ spring:
   devtools:
     restart:
       enabled: false
+
+minio:
+  url: http://localhost:9000
+  access-key: admin
+  secret-key: password
+  bucket: warrior-news
+
 server:
   port: 8080
   servlet:
