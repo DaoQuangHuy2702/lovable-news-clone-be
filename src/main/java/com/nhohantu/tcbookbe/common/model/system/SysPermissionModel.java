@@ -22,6 +22,7 @@ public class SysPermissionModel extends BaseModel {
     @Column(name = "permission_description")
     private String permissionDescription;
 
+    @Builder.Default
     @OneToMany(mappedBy = "permission", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RolePermissionModel> rolePermissions = new HashSet<>();
 }

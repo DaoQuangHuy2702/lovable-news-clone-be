@@ -27,6 +27,7 @@ public class SysRoleModel extends BaseModel {
     @Column(name = "role_type")
     private String roleType;
 
+    @Builder.Default
     @OneToMany(mappedBy = "role", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RolePermissionModel> rolePermissions = new HashSet<>();
 }

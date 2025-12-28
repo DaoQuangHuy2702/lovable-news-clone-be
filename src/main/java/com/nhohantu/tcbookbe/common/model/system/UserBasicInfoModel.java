@@ -37,16 +37,17 @@ public class UserBasicInfoModel extends BaseModel {
     @Column(name = "email", columnDefinition = "VARCHAR(255)")
     private String email;
 
-//    @Column(name = "role", columnDefinition = "VARCHAR(50)")
-//    @Enumerated(EnumType.STRING)
-//    private RoleEnum role;
+    // @Column(name = "role", columnDefinition = "VARCHAR(50)")
+    // @Enumerated(EnumType.STRING)
+    // private RoleEnum role;
 
-    @Column(name = "created_by", columnDefinition = "INT")
-    private Long createdBy;
+    @Column(name = "created_by")
+    private String createdBy;
 
     @Column(name = "address")
     private String address;
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<UserSysRoleModel> userRoles = new HashSet<>();
 }

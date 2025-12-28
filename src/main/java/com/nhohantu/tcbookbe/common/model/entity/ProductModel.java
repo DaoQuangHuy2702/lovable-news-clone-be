@@ -37,6 +37,7 @@ public class ProductModel extends BaseModel {
     @Column(name = "main_image_url")
     private String mainImageUrl; // ảnh bìa sp
 
+    @Builder.Default
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductCategoryModel> productCategories = new ArrayList<>();
 }

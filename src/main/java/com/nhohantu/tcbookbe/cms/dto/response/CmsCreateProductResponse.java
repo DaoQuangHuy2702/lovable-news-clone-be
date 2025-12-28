@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class CmsCreateProductResponse {
-    private Long id;
+    private String id;
     private String name;
     private String desciption;
     private String coverUrl;

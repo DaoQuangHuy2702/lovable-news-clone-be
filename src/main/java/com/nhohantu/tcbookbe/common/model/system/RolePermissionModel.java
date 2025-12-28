@@ -27,5 +27,5 @@ public class RolePermissionModel extends BaseModel {
     private LocalDateTime assignedAt;
 
     @Column(name = "assigned_by")
-    private Long assignedBy;
+    private String assignedBy;
 }

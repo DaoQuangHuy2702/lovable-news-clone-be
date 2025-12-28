@@ -6,6 +6,7 @@ import com.nhohantu.tcbookbe.common.model.dto.request.RegisterRequest;
 import com.nhohantu.tcbookbe.common.model.dto.response.RegisterResponse;
 import com.nhohantu.tcbookbe.common.model.system.UserBasicInfoModel;
 import com.nhohantu.tcbookbe.common.model.enums.StatusCodeEnum;
+import com.nhohantu.tcbookbe.common.repository.BaseUserInfoRepo;
 import com.nhohantu.tcbookbe.common.security.AuthenticationService;
 import com.nhohantu.tcbookbe.common.security.UserDetailsImpl;
 import com.nhohantu.tcbookbe.common.security.UserDetailsServiceImpl;
@@ -25,16 +26,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserBasicInfoService {
     private final AuthenticationService authService;
     private final UserDetailsServiceImpl userDetailsService;
+    private final BaseUserInfoRepo baseUserInfoRepo;
     private final ModelMapper mapper;
 
     public UserBasicInfoModel getUserInfoFromContext() {
         try {
-            UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-            return userDetails.getUser();
+            UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                    .getPrincipal();
+            String username = userDetails.getUsername();
+            return baseUserInfoRepo.findByUsername(username).orElse(null);
         } catch (Exception e) {
-            log.error("Failed when get user from context");
-
+            log.error("Failed when get user from context: " + e.getMessage());
             return null;
         }
     }
@@ -48,19 +50,21 @@ public class UserBasicInfoService {
                         StatusCodeEnum.ERRORCODE4000);
             }
 
-//            UserBasicInfoModel userBasicInfoModel;
-//            try {
-//                userBasicInfoModel = getUserInfoFromContext();
-//                if (userBasicInfoModel == null) {
-//                    return ResponseBuilder.badRequestResponse("Create new user failed, can not get user info from context",
-//                            StatusCodeEnum.ERRORCODE4000);
-//                }
-//            } catch (Exception e) {
-//                return ResponseBuilder.badRequestResponse("Create new user failed, error when get user info from context",
-//                        StatusCodeEnum.ERRORCODE4000);
-//            }
+            // UserBasicInfoModel userBasicInfoModel;
+            // try {
+            // userBasicInfoModel = getUserInfoFromContext();
+            // if (userBasicInfoModel == null) {
+            // return ResponseBuilder.badRequestResponse("Create new user failed, can not
+            // get user info from context",
+            // StatusCodeEnum.ERRORCODE4000);
+            // }
+            // } catch (Exception e) {
+            // return ResponseBuilder.badRequestResponse("Create new user failed, error when
+            // get user info from context",
+            // StatusCodeEnum.ERRORCODE4000);
+            // }
 
-            registeredUser = authService.signup(request, null);//todo tạm thời dùng cho người dùng thông thường nên ko cần set, nhưng cần tạo 1 service riêng cho cms tạo user
+            registeredUser = authService.signup(request);
         } catch (Exception e) {
             return ResponseBuilder.badRequestResponse("Create new user failed, unexpected error",
                     StatusCodeEnum.ERRORCODE4000);
