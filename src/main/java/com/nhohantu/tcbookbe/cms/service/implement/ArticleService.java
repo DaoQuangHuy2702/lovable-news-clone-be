@@ -8,7 +8,9 @@ import com.nhohantu.tcbookbe.common.model.enums.ArticleTypeEnum;
 import com.nhohantu.tcbookbe.common.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,12 +22,29 @@ public class ArticleService {
     private final CategoryService categoryService;
 
     public Page<ArticleSummaryResponse> getAllArticles(Pageable pageable) {
-        return articleRepository.findAll(pageable).map(article -> ArticleSummaryResponse.builder()
+        return articleRepository.findAll(pageable).map(this::mapToSummaryResponse);
+    }
+
+    public Page<ArticleSummaryResponse> getArticlesByType(String type, Pageable pageable) {
+        ArticleTypeEnum articleType = ArticleTypeEnum.valueOf(type);
+        return articleRepository.findByType(articleType, pageable).map(this::mapToSummaryResponse);
+    }
+
+    public Page<ArticleSummaryResponse> getArticlesByTypeAndCategory(String type, String categoryId,
+            Pageable pageable) {
+        ArticleTypeEnum articleType = ArticleTypeEnum.valueOf(type);
+        return articleRepository.findByTypeAndCategoryId(articleType, categoryId, pageable)
+                .map(this::mapToSummaryResponse);
+    }
+
+    private ArticleSummaryResponse mapToSummaryResponse(Article article) {
+        return ArticleSummaryResponse.builder()
                 .id(article.getId())
                 .title(article.getTitle())
                 .excerpt(article.getExcerpt())
                 .views(article.getViews())
                 .type(article.getType())
+                .thumbnail(article.getThumbnail())
                 .createdAt(article.getCreatedAt())
                 .updatedAt(article.getUpdatedAt())
                 .category(article.getCategory() != null ? ArticleSummaryResponse.CategorySummary.builder()
@@ -33,7 +52,7 @@ public class ArticleService {
                         .name(article.getCategory().getName())
                         .colorCode(article.getCategory().getColorCode())
                         .build() : null)
-                .build());
+                .build();
     }
 
     public Article getArticle(String id) {
@@ -84,5 +103,27 @@ public class ArticleService {
     public void deleteArticle(String id) {
         Article article = getArticle(id);
         articleRepository.delete(article);
+    }
+
+    @Transactional
+    public void increaseView(String id) {
+        articleRepository.incrementViews(id);
+    }
+
+    public ArticleSummaryResponse getFeaturedArticle(String type, String categoryId) {
+        ArticleTypeEnum articleType = ArticleTypeEnum.valueOf(type);
+        Pageable pageable = PageRequest.of(0, 1, Sort.by(Sort.Order.desc("views"), Sort.Order.desc("createdAt")));
+
+        Page<Article> page;
+        if (categoryId != null && !categoryId.isEmpty()) {
+            page = articleRepository.findByTypeAndCategoryId(articleType, categoryId, pageable);
+        } else {
+            page = articleRepository.findByType(articleType, pageable);
+        }
+
+        if (page.hasContent()) {
+            return mapToSummaryResponse(page.getContent().get(0));
+        }
+        return null;
     }
 }

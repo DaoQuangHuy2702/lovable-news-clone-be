@@ -14,6 +14,6 @@ import lombok.*;
 @Entity
 public class CartModel extends BaseModel {
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", columnDefinition = "VARCHAR(36)")
     private UserBasicInfoModel user;
 }

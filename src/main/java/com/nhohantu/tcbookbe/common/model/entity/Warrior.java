@@ -1,14 +1,18 @@
 package com.nhohantu.tcbookbe.common.model.entity;
 
 import com.nhohantu.tcbookbe.common.model.base.entity.BaseModel;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -42,6 +46,52 @@ public class Warrior extends BaseModel {
     @Column(name = "gender")
     private String gender;
 
-    @Column(name = "address")
-    private String address;
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "notes", columnDefinition = "TEXT")
+    private String notes;
+
+    @Column(name = "strengths", columnDefinition = "TEXT")
+    private String strengths;
+
+    @Column(name = "aspirations", columnDefinition = "TEXT")
+    private String aspirations;
+
+    @Column(name = "hometown_province_code")
+    private String hometownProvinceCode;
+
+    @Column(name = "hometown_commune_code")
+    private String hometownCommuneCode;
+
+    @Column(name = "hometown_address")
+    private String hometownAddress;
+
+    @Column(name = "current_province_code")
+    private String currentProvinceCode;
+
+    @Column(name = "current_commune_code")
+    private String currentCommuneCode;
+
+    @Column(name = "current_address")
+    private String currentAddress;
+
+    @Column(name = "avatar")
+    private String avatar;
+
+    @OneToMany(mappedBy = "warrior", cascade = CascadeType.ALL, orphanRemoval = true)
+    @com.fasterxml.jackson.annotation.JsonManagedReference
+    private List<FamilyMember> familyMembers;
+
+    @jakarta.persistence.Transient
+    private String hometownProvinceName;
+
+    @jakarta.persistence.Transient
+    private String hometownCommuneName;
+
+    @jakarta.persistence.Transient
+    private String currentProvinceName;
+
+    @jakarta.persistence.Transient
+    private String currentCommuneName;
 }

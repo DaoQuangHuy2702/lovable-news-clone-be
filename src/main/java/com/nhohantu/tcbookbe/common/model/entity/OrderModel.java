@@ -17,10 +17,10 @@ import java.math.BigDecimal;
 public class OrderModel extends BaseModel {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", columnDefinition = "VARCHAR(36)")
     private UserBasicInfoModel user;
 
     private BigDecimal totalPrice;
 
-    private String status;//todo chắc đổi qua enum
+    private String status;// todo chắc đổi qua enum
 }

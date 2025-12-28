@@ -16,11 +16,11 @@ import java.time.LocalDateTime;
 public class RolePermissionModel extends BaseModel {
 
     @ManyToOne
-    @JoinColumn(name = "role_id")
+    @JoinColumn(name = "role_id", columnDefinition = "VARCHAR(36)")
     private SysRoleModel role;
 
     @ManyToOne
-    @JoinColumn(name = "permission_id")
+    @JoinColumn(name = "permission_id", columnDefinition = "VARCHAR(36)")
     private SysPermissionModel permission;
 
     @Column(name = "assigned_at")

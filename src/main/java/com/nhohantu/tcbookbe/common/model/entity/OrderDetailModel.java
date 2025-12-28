@@ -4,7 +4,7 @@ import com.nhohantu.tcbookbe.common.model.base.entity.BaseModel;
 import jakarta.persistence.*;
 import lombok.*;
 
-/**Bảng trung gian - chi tiết 1 đơn hàng*/
+/** Bảng trung gian - chi tiết 1 đơn hàng */
 @EqualsAndHashCode(callSuper = false)
 @Data
 @AllArgsConstructor
@@ -15,10 +15,10 @@ import lombok.*;
 public class OrderDetailModel extends BaseModel {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", columnDefinition = "VARCHAR(36)")
     private OrderModel order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", columnDefinition = "VARCHAR(36)")
     private ProductModel product;
 }

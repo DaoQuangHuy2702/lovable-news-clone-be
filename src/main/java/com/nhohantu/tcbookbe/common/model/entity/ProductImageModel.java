@@ -17,12 +17,13 @@ public class ProductImageModel extends BaseModel {
     private String imageUrl;
 
     @Column(name = "is_primary")
-    private boolean isPrimary;//ảnh chính dùng làm ảnh bìa, có trigger khi update 1 ảnh là ảnh chính thì sẽ tự động update trường main_image_url trong bảng product
+    private boolean isPrimary;// ảnh chính dùng làm ảnh bìa, có trigger khi update 1 ảnh là ảnh chính thì sẽ
+                              // tự động update trường main_image_url trong bảng product
 
     @Column(name = "description")
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", columnDefinition = "VARCHAR(36)")
     private ProductModel product;
 }

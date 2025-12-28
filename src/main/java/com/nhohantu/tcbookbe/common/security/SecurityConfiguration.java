@@ -25,7 +25,7 @@ public class SecurityConfiguration {
         private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
         private final String[] PUBLIC_ENDPOINT = { "swagger-ui/**", "/v3/api-docs/**", "/auth/**", "/check-authority",
-                        "/categories/**", "/quiz/**" };
+                        "/categories/**", "/quiz/**", "/api/v1/public/administrative-units/**" };
 
         private final String[] PERMIT_FOR_DEVELOPING = { "swagger-ui/**", "/v3/api-docs/**", "/check-authority",
                         "/user-info/create-user", "/user-info/**" };

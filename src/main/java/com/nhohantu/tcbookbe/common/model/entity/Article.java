@@ -37,7 +37,7 @@ public class Article extends BaseModel {
     private String content;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", columnDefinition = "VARCHAR(36)")
     private Category category;
 
     @Column(name = "thumbnail", length = 500)

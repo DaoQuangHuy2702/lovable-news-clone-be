@@ -13,11 +13,11 @@ import lombok.*;
 @Entity
 public class CartItem extends BaseModel {
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id")
+    @JoinColumn(name = "cart_id", columnDefinition = "VARCHAR(36)")
     private CartModel cart;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", columnDefinition = "VARCHAR(36)")
     private ProductModel product;
 
     @Column(name = "quantity", nullable = false)

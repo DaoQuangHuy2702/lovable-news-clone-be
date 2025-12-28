@@ -19,6 +19,7 @@ public class ArticleSummaryResponse {
     private CategorySummary category;
     private Long views;
     private ArticleTypeEnum type;
+    private String thumbnail;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

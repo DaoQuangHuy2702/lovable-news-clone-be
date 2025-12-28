@@ -26,15 +26,15 @@ import java.util.List;
 public class CategoryModel extends BaseModel {
 
     @Column(name = "name", columnDefinition = "VARCHAR(255)", nullable = false)
-    private String name;//tên danh mục
+    private String name;// tên danh mục
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
+    @JoinColumn(name = "parent_id", columnDefinition = "VARCHAR(36)")
     private CategoryModel parentCategory; // Danh mục cha
 
     @OneToMany(mappedBy = "parentCategory", fetch = FetchType.LAZY)
     private List<CategoryModel> childCategory; // Danh mục con
 
     @Column(name = "category_level")
-    private Integer categoryLevel;//1,2,3 (min = 3), sản phẩm chỉ có thể gán category level = 3
+    private Integer categoryLevel;// 1,2,3 (min = 3), sản phẩm chỉ có thể gán category level = 3
 }

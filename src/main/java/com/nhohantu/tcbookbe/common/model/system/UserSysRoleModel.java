@@ -6,7 +6,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-/**Bảng trung gian User - SysRole*/
+/** Bảng trung gian User - SysRole */
 @EqualsAndHashCode(callSuper = false)
 @Data
 @AllArgsConstructor
@@ -16,11 +16,11 @@ import java.time.LocalDateTime;
 @Entity
 public class UserSysRoleModel extends BaseModel {
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", columnDefinition = "VARCHAR(36)")
     private UserBasicInfoModel user;
 
     @ManyToOne
-    @JoinColumn(name = "role_id")
+    @JoinColumn(name = "role_id", columnDefinition = "VARCHAR(36)")
     private SysRoleModel role;
 
     @Column(name = "assigned_at")
