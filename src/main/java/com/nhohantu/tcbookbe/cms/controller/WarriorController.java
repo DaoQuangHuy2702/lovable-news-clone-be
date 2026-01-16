@@ -22,10 +22,19 @@ public class WarriorController {
     public ResponseEntity<ResponseDTO<Page<Warrior>>> getAllWarriors(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String rank,
-            @RequestParam(required = false) String status,
             @PageableDefault(size = 10) Pageable pageable) {
-        Page<Warrior> warriors = warriorService.getWarriorsWithFilters(name, rank, status, pageable);
+        Page<Warrior> warriors = warriorService.getWarriorsWithFilters(name, rank, pageable);
         return ResponseBuilder.okResponse("Get warriors success", warriors, StatusCodeEnum.SUCCESS2000);
+    }
+
+    @GetMapping("/leave-management")
+    public ResponseEntity<ResponseDTO<Page<Warrior>>> getLeaveManagementWarriors(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Integer year,
+            @PageableDefault(size = 10) Pageable pageable) {
+        Page<Warrior> warriors = warriorService.getLeaveManagementWarriors(name, year, pageable);
+        return ResponseBuilder.okResponse("Get leave management warriors success", warriors,
+                StatusCodeEnum.SUCCESS2000);
     }
 
     @PostMapping
@@ -35,8 +44,9 @@ public class WarriorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseDTO<Warrior>> getWarrior(@PathVariable String id) {
-        return ResponseBuilder.okResponse("Get warrior success", warriorService.getWarrior(id),
+    public ResponseEntity<ResponseDTO<Warrior>> getWarrior(@PathVariable String id,
+            @RequestParam(required = false) Integer year) {
+        return ResponseBuilder.okResponse("Get warrior success", warriorService.getWarrior(id, year),
                 StatusCodeEnum.SUCCESS2000);
     }
 

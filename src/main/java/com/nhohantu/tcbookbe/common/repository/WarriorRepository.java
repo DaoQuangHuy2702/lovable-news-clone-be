@@ -10,12 +10,17 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WarriorRepository extends JpaRepository<Warrior, String> {
-    Page<Warrior> findByNameContainingIgnoreCase(String name, Pageable pageable);
+        Page<Warrior> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
-    @Query("SELECT w FROM Warrior w WHERE " +
-            "(:name IS NULL OR LOWER(w.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
-            "(:rank IS NULL OR w.rank = :rank) AND " +
-            "(:status IS NULL OR w.status = :status)")
-    Page<Warrior> findWithFilters(@Param("name") String name, @Param("rank") String rank,
-            @Param("status") String status, Pageable pageable);
+        @Query("SELECT w FROM Warrior w WHERE " +
+                        "(:name IS NULL OR LOWER(w.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
+                        "(:rank IS NULL OR w.rank = :rank)")
+        Page<Warrior> findWithFilters(@Param("name") String name, @Param("rank") String rank,
+                        Pageable pageable);
+
+        @Query("SELECT w FROM Warrior w JOIN LeaveBalance lb ON w.id = lb.warriorId WHERE " +
+                        "lb.year = :year AND lb.totalLeaveDays IS NOT NULL AND " +
+                        "(:name IS NULL OR LOWER(w.name) LIKE LOWER(CONCAT('%', :name, '%')))")
+        Page<Warrior> findLeaveManagementWarriors(@Param("name") String name, @Param("year") Integer year,
+                        Pageable pageable);
 }

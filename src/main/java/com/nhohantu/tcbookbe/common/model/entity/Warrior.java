@@ -32,8 +32,11 @@ public class Warrior extends BaseModel {
     @Column(name = "unit", nullable = false)
     private String unit;
 
-    @Column(name = "status")
-    private String status;
+    @jakarta.persistence.Transient
+    private Integer totalLeaveDays;
+
+    @jakarta.persistence.Transient
+    private Integer usedLeaveDays;
 
     @Column(name = "birth_date")
     @com.fasterxml.jackson.annotation.JsonFormat(shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
