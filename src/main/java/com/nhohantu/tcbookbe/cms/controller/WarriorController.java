@@ -24,7 +24,7 @@ public class WarriorController {
             @RequestParam(required = false) String rank,
             @PageableDefault(size = 10) Pageable pageable) {
         Page<Warrior> warriors = warriorService.getWarriorsWithFilters(name, rank, pageable);
-        return ResponseBuilder.okResponse("Get warriors success", warriors, StatusCodeEnum.SUCCESS2000);
+        return ResponseBuilder.okResponse("Lấy danh sách chiến sĩ thành công", warriors, StatusCodeEnum.SUCCESS2000);
     }
 
     @GetMapping("/leave-management")
@@ -33,33 +33,34 @@ public class WarriorController {
             @RequestParam(required = false) Integer year,
             @PageableDefault(size = 10) Pageable pageable) {
         Page<Warrior> warriors = warriorService.getLeaveManagementWarriors(name, year, pageable);
-        return ResponseBuilder.okResponse("Get leave management warriors success", warriors,
+        return ResponseBuilder.okResponse("Lấy danh sách quản lý nghỉ phép thành công", warriors,
                 StatusCodeEnum.SUCCESS2000);
     }
 
     @PostMapping
     public ResponseEntity<ResponseDTO<Warrior>> createWarrior(@jakarta.validation.Valid @RequestBody Warrior warrior) {
-        return ResponseBuilder.okResponse("Create warrior success", warriorService.createWarrior(warrior),
+        return ResponseBuilder.okResponse("Tạo mới chiến sĩ thành công", warriorService.createWarrior(warrior),
                 StatusCodeEnum.SUCCESS2000);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDTO<Warrior>> getWarrior(@PathVariable String id,
             @RequestParam(required = false) Integer year) {
-        return ResponseBuilder.okResponse("Get warrior success", warriorService.getWarrior(id, year),
+        return ResponseBuilder.okResponse("Lấy thông tin chiến sĩ thành công", warriorService.getWarrior(id, year),
                 StatusCodeEnum.SUCCESS2000);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDTO<Warrior>> updateWarrior(@PathVariable String id,
             @jakarta.validation.Valid @RequestBody Warrior warrior) {
-        return ResponseBuilder.okResponse("Update warrior success", warriorService.updateWarrior(id, warrior),
+        return ResponseBuilder.okResponse("Cập nhật thông tin chiến sĩ thành công",
+                warriorService.updateWarrior(id, warrior),
                 StatusCodeEnum.SUCCESS2000);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDTO<Void>> deleteWarrior(@PathVariable String id) {
         warriorService.deleteWarrior(id);
-        return ResponseBuilder.okResponse("Delete warrior success", null, StatusCodeEnum.SUCCESS2000);
+        return ResponseBuilder.okResponse("Xóa chiến sĩ thành công", null, StatusCodeEnum.SUCCESS2000);
     }
 }

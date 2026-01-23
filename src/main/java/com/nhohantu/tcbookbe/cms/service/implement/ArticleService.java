@@ -57,7 +57,7 @@ public class ArticleService {
     }
 
     public Article getArticle(String id) {
-        return articleRepository.findById(id).orElseThrow(() -> new RuntimeException("Article not found"));
+        return articleRepository.findById(id).orElseThrow(() -> new RuntimeException("Không tìm thấy bài viết"));
     }
 
     @Transactional

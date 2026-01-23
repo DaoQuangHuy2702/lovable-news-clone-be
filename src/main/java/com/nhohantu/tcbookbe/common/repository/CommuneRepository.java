@@ -9,4 +9,12 @@ import java.util.List;
 @Repository
 public interface CommuneRepository extends JpaRepository<Commune, String> {
     List<Commune> findByProvinceCode(String provinceCode);
+
+    List<Commune> findByProvinceCodeOrderByNameAsc(String provinceCode);
+
+    List<Commune> findByProvinceCodeAndNameContainingIgnoreCaseOrderByNameAsc(String provinceCode, String name);
+
+    List<Commune> findByNameContainingIgnoreCaseOrderByNameAsc(String name);
+
+    List<Commune> findAllByOrderByNameAsc();
 }

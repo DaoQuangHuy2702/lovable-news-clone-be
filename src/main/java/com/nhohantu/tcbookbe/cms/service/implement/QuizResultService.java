@@ -23,14 +23,22 @@ public class QuizResultService {
         return quizResultRepository.findTopRankings();
     }
 
+    public List<QuizResult> getLeaderboardByQuizId(String quizId) {
+        return quizResultRepository.findTopRankingsByQuizId(quizId);
+    }
+
     public Page<QuizResult> getAllResults(Pageable pageable) {
         return quizResultRepository.findAll(pageable);
+    }
+
+    public Page<QuizResult> getAllResultsByQuizId(String quizId, Pageable pageable) {
+        return quizResultRepository.findByQuizIdAndIsDeletedFalse(quizId, pageable);
     }
 
     @Transactional
     public void deleteResult(String id) {
         QuizResult result = quizResultRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Result not found"));
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy kết quả"));
         result.setDeleted(true);
         quizResultRepository.save(result);
     }

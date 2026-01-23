@@ -26,31 +26,31 @@ public class CmsArticleController {
     public ResponseEntity<ResponseDTO<Page<ArticleSummaryResponse>>> getAllArticles(
             @PageableDefault(size = 10) Pageable pageable) {
         Page<ArticleSummaryResponse> articles = articleService.getAllArticles(pageable);
-        return ResponseBuilder.okResponse("Get articles success", articles, StatusCodeEnum.SUCCESS2000);
+        return ResponseBuilder.okResponse("Lấy danh sách bài viết thành công", articles, StatusCodeEnum.SUCCESS2000);
     }
 
     @PostMapping
     public ResponseEntity<ResponseDTO<Article>> createArticle(@Valid @RequestBody ArticleRequest request) {
-        return ResponseBuilder.okResponse("Create article success", articleService.createArticle(request),
+        return ResponseBuilder.okResponse("Tạo bài viết thành công", articleService.createArticle(request),
                 StatusCodeEnum.SUCCESS2000);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDTO<Article>> getArticle(@PathVariable String id) {
-        return ResponseBuilder.okResponse("Get article success", articleService.getArticle(id),
+        return ResponseBuilder.okResponse("Lấy chi tiết bài viết thành công", articleService.getArticle(id),
                 StatusCodeEnum.SUCCESS2000);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDTO<Article>> updateArticle(@PathVariable String id,
             @Valid @RequestBody ArticleRequest request) {
-        return ResponseBuilder.okResponse("Update article success", articleService.updateArticle(id, request),
+        return ResponseBuilder.okResponse("Cập nhật bài viết thành công", articleService.updateArticle(id, request),
                 StatusCodeEnum.SUCCESS2000);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDTO<Void>> deleteArticle(@PathVariable String id) {
         articleService.deleteArticle(id);
-        return ResponseBuilder.okResponse("Delete article success", null, StatusCodeEnum.SUCCESS2000);
+        return ResponseBuilder.okResponse("Xóa bài viết thành công", null, StatusCodeEnum.SUCCESS2000);
     }
 }

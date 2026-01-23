@@ -24,21 +24,21 @@ public class LeaveRequestController {
             @PathVariable String warriorId,
             @RequestParam(required = false) Integer year,
             @PageableDefault(size = 10) Pageable pageable) {
-        return ResponseBuilder.okResponse("Get leave requests success",
+        return ResponseBuilder.okResponse("Lấy danh sách đơn nghỉ phép thành công",
                 leaveRequestService.getLeaveRequestsByWarrior(warriorId, year, pageable),
                 StatusCodeEnum.SUCCESS2000);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDTO<LeaveRequest>> getById(@PathVariable String id) {
-        return ResponseBuilder.okResponse("Get leave request success",
+        return ResponseBuilder.okResponse("Lấy chi tiết đơn nghỉ phép thành công",
                 leaveRequestService.getById(id),
                 StatusCodeEnum.SUCCESS2000);
     }
 
     @PostMapping
     public ResponseEntity<ResponseDTO<LeaveRequest>> create(@RequestBody LeaveRequest request) {
-        return ResponseBuilder.okResponse("Create leave request success",
+        return ResponseBuilder.okResponse("Tạo đơn nghỉ phép thành công",
                 leaveRequestService.createLeaveRequest(request),
                 StatusCodeEnum.SUCCESS2000);
     }
@@ -46,7 +46,7 @@ public class LeaveRequestController {
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDTO<LeaveRequest>> update(@PathVariable String id,
             @RequestBody LeaveRequest request) {
-        return ResponseBuilder.okResponse("Update leave request success",
+        return ResponseBuilder.okResponse("Cập nhật đơn nghỉ phép thành công",
                 leaveRequestService.updateLeaveRequest(id, request),
                 StatusCodeEnum.SUCCESS2000);
     }
@@ -54,6 +54,6 @@ public class LeaveRequestController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDTO<Void>> delete(@PathVariable String id) {
         leaveRequestService.deleteLeaveRequest(id);
-        return ResponseBuilder.okResponse("Delete leave request success", null, StatusCodeEnum.SUCCESS2000);
+        return ResponseBuilder.okResponse("Xóa đơn nghỉ phép thành công", null, StatusCodeEnum.SUCCESS2000);
     }
 }

@@ -3,6 +3,9 @@ package com.nhohantu.tcbookbe.common.model.entity;
 import com.nhohantu.tcbookbe.common.model.base.entity.BaseModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,4 +50,8 @@ public class QuizResult extends BaseModel {
 
     @Column(name = "completion_time")
     private Long completionTime; // In seconds
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "quiz_id")
+    private Quiz quiz;
 }

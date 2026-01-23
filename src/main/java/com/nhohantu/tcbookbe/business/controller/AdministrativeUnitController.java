@@ -23,9 +23,10 @@ public class AdministrativeUnitController {
     private final AdministrativeUnitService administrativeUnitService;
 
     @GetMapping("/provinces")
-    public ResponseEntity<ResponseDTO<List<ProvinceResponse>>> getAllProvinces() {
-        return ResponseBuilder.okResponse("Get provinces success",
-                administrativeUnitService.getAllProvinces(),
+    public ResponseEntity<ResponseDTO<List<ProvinceResponse>>> getAllProvinces(
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String search) {
+        return ResponseBuilder.okResponse("Lấy danh sách tỉnh thành thành công",
+                administrativeUnitService.getAllProvinces(search),
                 StatusCodeEnum.SUCCESS2000);
     }
 
@@ -33,17 +34,18 @@ public class AdministrativeUnitController {
     public ResponseEntity<ResponseDTO<ProvinceResponse>> getProvinceById(@PathVariable String id) {
         ProvinceResponse province = administrativeUnitService.getProvinceById(id);
         if (province == null) {
-            return ResponseBuilder.badRequestResponse("Province not found", StatusCodeEnum.EXCEPTION0404);
+            return ResponseBuilder.badRequestResponse("Không tìm thấy tỉnh thành", StatusCodeEnum.EXCEPTION0404);
         }
-        return ResponseBuilder.okResponse("Get province success",
+        return ResponseBuilder.okResponse("Lấy thông tin tỉnh thành thành công",
                 province,
                 StatusCodeEnum.SUCCESS2000);
     }
 
     @GetMapping("/communes")
-    public ResponseEntity<ResponseDTO<List<CommuneResponse>>> getAllCommunes() {
-        return ResponseBuilder.okResponse("Get communes success",
-                administrativeUnitService.getAllCommunes(),
+    public ResponseEntity<ResponseDTO<List<CommuneResponse>>> getAllCommunes(
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String search) {
+        return ResponseBuilder.okResponse("Lấy danh sách xã phường thành công",
+                administrativeUnitService.getAllCommunes(search),
                 StatusCodeEnum.SUCCESS2000);
     }
 
@@ -51,17 +53,19 @@ public class AdministrativeUnitController {
     public ResponseEntity<ResponseDTO<CommuneResponse>> getCommuneById(@PathVariable String id) {
         CommuneResponse commune = administrativeUnitService.getCommuneById(id);
         if (commune == null) {
-            return ResponseBuilder.badRequestResponse("Commune not found", StatusCodeEnum.EXCEPTION0404);
+            return ResponseBuilder.badRequestResponse("Không tìm thấy xã phường", StatusCodeEnum.EXCEPTION0404);
         }
-        return ResponseBuilder.okResponse("Get commune success",
+        return ResponseBuilder.okResponse("Lấy thông tin xã phường thành công",
                 commune,
                 StatusCodeEnum.SUCCESS2000);
     }
 
     @GetMapping("/communes/province/{provinceCode}")
-    public ResponseEntity<ResponseDTO<List<CommuneResponse>>> getCommunesByProvince(@PathVariable String provinceCode) {
-        return ResponseBuilder.okResponse("Get communes by province success",
-                administrativeUnitService.getCommunesByProvinceCode(provinceCode),
+    public ResponseEntity<ResponseDTO<List<CommuneResponse>>> getCommunesByProvince(
+            @PathVariable String provinceCode,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String search) {
+        return ResponseBuilder.okResponse("Lấy danh sách xã phường theo tỉnh thành thành công",
+                administrativeUnitService.getCommunesByProvinceCode(provinceCode, search),
                 StatusCodeEnum.SUCCESS2000);
     }
 }

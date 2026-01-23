@@ -23,31 +23,31 @@ public class CmsCategoryController {
     public ResponseEntity<ResponseDTO<Page<Category>>> getAllCategories(
             @PageableDefault(size = 10) Pageable pageable) {
         Page<Category> categories = categoryService.getAllCategories(pageable);
-        return ResponseBuilder.okResponse("Get categories success", categories, StatusCodeEnum.SUCCESS2000);
+        return ResponseBuilder.okResponse("Lấy danh sách danh mục thành công", categories, StatusCodeEnum.SUCCESS2000);
     }
 
     @PostMapping
     public ResponseEntity<ResponseDTO<Category>> createCategory(@RequestBody Category category) {
-        return ResponseBuilder.okResponse("Create category success", categoryService.createCategory(category),
+        return ResponseBuilder.okResponse("Tạo danh mục thành công", categoryService.createCategory(category),
                 StatusCodeEnum.SUCCESS2000);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDTO<Category>> getCategory(@PathVariable String id) {
-        return ResponseBuilder.okResponse("Get category success", categoryService.getCategory(id),
+        return ResponseBuilder.okResponse("Lấy chi tiết danh mục thành công", categoryService.getCategory(id),
                 StatusCodeEnum.SUCCESS2000);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDTO<Category>> updateCategory(@PathVariable String id,
             @RequestBody Category category) {
-        return ResponseBuilder.okResponse("Update category success", categoryService.updateCategory(id, category),
+        return ResponseBuilder.okResponse("Cập nhật danh mục thành công", categoryService.updateCategory(id, category),
                 StatusCodeEnum.SUCCESS2000);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDTO<Void>> deleteCategory(@PathVariable String id) {
         categoryService.deleteCategory(id);
-        return ResponseBuilder.okResponse("Delete category success", null, StatusCodeEnum.SUCCESS2000);
+        return ResponseBuilder.okResponse("Xóa danh mục thành công", null, StatusCodeEnum.SUCCESS2000);
     }
 }

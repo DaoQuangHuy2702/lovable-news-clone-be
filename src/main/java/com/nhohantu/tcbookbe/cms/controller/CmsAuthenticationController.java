@@ -38,15 +38,15 @@ public class CmsAuthenticationController {
 
             // 2. Check Role ADMIN
             Account account = accountRepository.findByUsername(request.getUsername())
-                    .orElseThrow(() -> new RuntimeException("Account not found"));
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy tài khoản"));
 
             if (!"ADMIN".equals(account.getRole())) {
-                return ResponseBuilder.badRequestResponse("Access Denied: Admin role required",
+                return ResponseBuilder.badRequestResponse("Truy cập bị từ chối: Yêu cầu quyền Admin",
                         StatusCodeEnum.ERRORCODE4003);
             }
 
             if (!account.isActive()) {
-                return ResponseBuilder.badRequestResponse("Account is inactive", StatusCodeEnum.ERRORCODE4003);
+                return ResponseBuilder.badRequestResponse("Tài khoản đang bị khóa", StatusCodeEnum.ERRORCODE4003);
             }
 
             // 3. Generate Token
@@ -58,10 +58,10 @@ public class CmsAuthenticationController {
                     .expiresIn(jwtService.getExpirationTime())
                     .build();
 
-            return ResponseBuilder.okResponse("Login successful", loginResponse, StatusCodeEnum.SUCCESS2000);
+            return ResponseBuilder.okResponse("Đăng nhập thành công", loginResponse, StatusCodeEnum.SUCCESS2000);
 
         } catch (Exception e) {
-            return ResponseBuilder.badRequestResponse("Invalid credentials", StatusCodeEnum.ERRORCODE4000);
+            return ResponseBuilder.badRequestResponse("Thông tin đăng nhập không hợp lệ", StatusCodeEnum.ERRORCODE4000);
         }
     }
 }

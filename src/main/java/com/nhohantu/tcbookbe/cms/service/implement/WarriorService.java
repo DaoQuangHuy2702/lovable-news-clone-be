@@ -86,7 +86,8 @@ public class WarriorService {
     }
 
     public Warrior getWarrior(String id, Integer year) {
-        Warrior warrior = warriorRepository.findById(id).orElseThrow(() -> new RuntimeException("Warrior not found"));
+        Warrior warrior = warriorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy chiến sĩ"));
         populateWarriorNames(warrior);
         int targetYear = year != null ? year : java.time.Year.now().getValue();
         populateLeaveBalance(warrior, targetYear);

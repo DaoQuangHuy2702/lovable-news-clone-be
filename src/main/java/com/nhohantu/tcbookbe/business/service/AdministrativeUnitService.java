@@ -19,8 +19,14 @@ public class AdministrativeUnitService {
     private final ProvinceRepository provinceRepository;
     private final CommuneRepository communeRepository;
 
-    public List<ProvinceResponse> getAllProvinces() {
-        return provinceRepository.findAll().stream()
+    public List<ProvinceResponse> getAllProvinces(String search) {
+        List<Province> provinces;
+        if (search != null && !search.isEmpty()) {
+            provinces = provinceRepository.findByNameContainingIgnoreCaseOrderByNameAsc(search);
+        } else {
+            provinces = provinceRepository.findAllByOrderByNameAsc();
+        }
+        return provinces.stream()
                 .map(this::mapToProvinceResponse)
                 .collect(Collectors.toList());
     }
@@ -31,8 +37,14 @@ public class AdministrativeUnitService {
                 .orElse(null);
     }
 
-    public List<CommuneResponse> getAllCommunes() {
-        return communeRepository.findAll().stream()
+    public List<CommuneResponse> getAllCommunes(String search) {
+        List<Commune> communes;
+        if (search != null && !search.isEmpty()) {
+            communes = communeRepository.findByNameContainingIgnoreCaseOrderByNameAsc(search);
+        } else {
+            communes = communeRepository.findAllByOrderByNameAsc();
+        }
+        return communes.stream()
                 .map(this::mapToCommuneResponse)
                 .collect(Collectors.toList());
     }
@@ -43,8 +55,15 @@ public class AdministrativeUnitService {
                 .orElse(null);
     }
 
-    public List<CommuneResponse> getCommunesByProvinceCode(String provinceCode) {
-        return communeRepository.findByProvinceCode(provinceCode).stream()
+    public List<CommuneResponse> getCommunesByProvinceCode(String provinceCode, String search) {
+        List<Commune> communes;
+        if (search != null && !search.isEmpty()) {
+            communes = communeRepository.findByProvinceCodeAndNameContainingIgnoreCaseOrderByNameAsc(provinceCode,
+                    search);
+        } else {
+            communes = communeRepository.findByProvinceCodeOrderByNameAsc(provinceCode);
+        }
+        return communes.stream()
                 .map(this::mapToCommuneResponse)
                 .collect(Collectors.toList());
     }

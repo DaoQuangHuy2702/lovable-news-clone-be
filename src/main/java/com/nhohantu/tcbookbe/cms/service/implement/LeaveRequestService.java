@@ -26,7 +26,7 @@ public class LeaveRequestService {
 
     public LeaveRequest getById(String id) {
         return leaveRequestRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("LeaveRequest not found"));
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy đơn nghỉ phép"));
     }
 
     @Transactional
@@ -67,7 +67,7 @@ public class LeaveRequestService {
     @Transactional
     public LeaveRequest updateLeaveRequest(String id, LeaveRequest details) {
         LeaveRequest request = leaveRequestRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("LeaveRequest not found"));
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy đơn nghỉ phép"));
 
         if ("APPROVED".equals(request.getStatus())) {
             throw new RuntimeException("Không thể sửa đơn đã được duyệt");
@@ -110,7 +110,7 @@ public class LeaveRequestService {
     @Transactional
     public void deleteLeaveRequest(String id) {
         LeaveRequest request = leaveRequestRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("LeaveRequest not found"));
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy đơn nghỉ phép"));
 
         if ("APPROVED".equals(request.getStatus())) {
             throw new RuntimeException("Không thể xoá đơn đã được duyệt");

@@ -11,4 +11,10 @@ public interface QuizResultRepository extends JpaRepository<QuizResult, String> 
 
     @Query("SELECT q FROM QuizResult q WHERE q.isDeleted = false ORDER BY q.score DESC, q.completionTime ASC, q.createdAt ASC")
     List<QuizResult> findTopRankings();
+
+    @Query("SELECT q FROM QuizResult q WHERE q.quiz.id = :quizId AND q.isDeleted = false ORDER BY q.score DESC, q.completionTime ASC, q.createdAt ASC")
+    List<QuizResult> findTopRankingsByQuizId(String quizId);
+
+    org.springframework.data.domain.Page<QuizResult> findByQuizIdAndIsDeletedFalse(String quizId,
+            org.springframework.data.domain.Pageable pageable);
 }

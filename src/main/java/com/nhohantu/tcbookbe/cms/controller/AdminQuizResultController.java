@@ -20,14 +20,21 @@ public class AdminQuizResultController {
 
     @GetMapping
     public ResponseEntity<ResponseDTO<Page<QuizResult>>> getAllResults(
+            @RequestParam(required = false) String quizId,
             @PageableDefault(size = 10) Pageable pageable) {
-        return ResponseBuilder.okResponse("Get all results success", quizResultService.getAllResults(pageable),
+        if (quizId != null && !quizId.isEmpty()) {
+            return ResponseBuilder.okResponse("Lấy danh sách kết quả trắc nghiệm theo bộ câu hỏi thành công",
+                    quizResultService.getAllResultsByQuizId(quizId, pageable),
+                    StatusCodeEnum.SUCCESS2000);
+        }
+        return ResponseBuilder.okResponse("Lấy danh sách kết quả trắc nghiệm thành công",
+                quizResultService.getAllResults(pageable),
                 StatusCodeEnum.SUCCESS2000);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDTO<Void>> deleteResult(@PathVariable String id) {
         quizResultService.deleteResult(id);
-        return ResponseBuilder.okResponse("Delete result success", null, StatusCodeEnum.SUCCESS2000);
+        return ResponseBuilder.okResponse("Xóa kết quả trắc nghiệm thành công", null, StatusCodeEnum.SUCCESS2000);
     }
 }

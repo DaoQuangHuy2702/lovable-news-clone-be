@@ -22,7 +22,7 @@ public class CategoryService {
     }
 
     public Category getCategory(String id) {
-        return categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Category not found"));
+        return categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Không tìm thấy danh mục"));
     }
 
     public Category updateCategory(String id, Category categoryDetails) {

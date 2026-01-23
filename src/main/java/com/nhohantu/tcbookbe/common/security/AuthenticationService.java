@@ -41,9 +41,7 @@ public class AuthenticationService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
-                        request.getPassword()
-                )
-        );
+                        request.getPassword()));
 
         Account account = accountRepository.findByUsername(request.getUsername())
                 .orElseThrow();
@@ -55,7 +53,7 @@ public class AuthenticationService {
         try {
             authenticatedUser = authenticate(request);
         } catch (Exception e) {
-            return ResponseBuilder.badRequestResponse("Login Failed", StatusCodeEnum.ERRORCODE4000);
+            return ResponseBuilder.badRequestResponse("Đăng nhập thất bại", StatusCodeEnum.ERRORCODE4000);
         }
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
@@ -65,6 +63,6 @@ public class AuthenticationService {
                 .expiresIn(jwtService.getExpirationTime())
                 .build();
 
-        return ResponseBuilder.okResponse("Login successfully", loginResponse, StatusCodeEnum.SUCCESS2000);
+        return ResponseBuilder.okResponse("Đăng nhập thành công", loginResponse, StatusCodeEnum.SUCCESS2000);
     }
 }
