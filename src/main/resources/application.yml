@@ -6,9 +6,9 @@ spring:
   application:
     name: tc-book-be
   datasource:
-    url: jdbc:mysql://localhost:3306/warrior_news
-    username: root
-    password: 123456
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
@@ -16,20 +16,19 @@ spring:
       ddl-auto: update
     show-sql: true
   jwt:
-    secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+    secret: ${JWT_SECRET}
     expire: 86400000 # 1 day
-    refresh: 5367566B59703373367639792442264529482B4D6251655468576D5A71347437
+    refresh: ${JWT_REFRESH_SECRET}
     expire-refrest: 2592000000 # 30 days
 
   devtools:
     restart:
       enabled: false
 
-minio:
-  url: http://localhost:9000
-  access-key: admin
-  secret-key: password
-  bucket: warrior-news
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET}
 
 server:
   port: 8080

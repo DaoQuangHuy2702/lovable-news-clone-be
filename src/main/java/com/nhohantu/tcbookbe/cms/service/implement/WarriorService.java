@@ -17,6 +17,7 @@ public class WarriorService {
     private final com.nhohantu.tcbookbe.common.repository.ProvinceRepository provinceRepository;
     private final com.nhohantu.tcbookbe.common.repository.CommuneRepository communeRepository;
     private final com.nhohantu.tcbookbe.common.repository.LeaveBalanceRepository leaveBalanceRepository;
+    private final com.nhohantu.tcbookbe.common.service.UploadService uploadService;
 
     public Page<Warrior> getAllWarriors(
             Pageable pageable) {
@@ -138,6 +139,12 @@ public class WarriorService {
         warrior.setCurrentProvinceCode(warriorDetails.getCurrentProvinceCode());
         warrior.setCurrentCommuneCode(warriorDetails.getCurrentCommuneCode());
         warrior.setCurrentAddress(warriorDetails.getCurrentAddress());
+
+        // Delete old image if avatar changed
+        if (warrior.getAvatar() != null && !warrior.getAvatar().equals(warriorDetails.getAvatar())) {
+            uploadService.deleteFile(warrior.getAvatar());
+        }
+
         warrior.setAvatar(warriorDetails.getAvatar());
 
         if (warriorDetails.getTotalLeaveDays() != null) {
@@ -179,7 +186,15 @@ public class WarriorService {
         return warriorRepository.save(warrior);
     }
 
+    @Transactional
     public void deleteWarrior(String id) {
-        warriorRepository.deleteById(id);
+        Warrior warrior = getWarrior(id, java.time.Year.now().getValue());
+
+        // Delete image from Cloudinary
+        if (warrior.getAvatar() != null) {
+            uploadService.deleteFile(warrior.getAvatar());
+        }
+
+        warriorRepository.delete(warrior);
     }
 }

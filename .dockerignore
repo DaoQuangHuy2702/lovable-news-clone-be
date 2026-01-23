@@ -1,0 +1,12 @@
+target/
+.mvn/
+mvnw
+mvnw.cmd
+.idea/
+.git/
+.gitignore
+*.iml
+HELP.md
+Dockerfile
+.dockerignore
+src/main/resources/application-local.yml

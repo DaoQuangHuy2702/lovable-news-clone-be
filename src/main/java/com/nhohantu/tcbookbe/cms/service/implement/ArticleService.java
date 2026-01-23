@@ -20,6 +20,7 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final CategoryService categoryService;
+    private final com.nhohantu.tcbookbe.common.service.UploadService uploadService;
 
     public Page<ArticleSummaryResponse> getAllArticles(Pageable pageable) {
         return articleRepository.findAll(pageable).map(this::mapToSummaryResponse);
@@ -87,6 +88,11 @@ public class ArticleService {
             category = categoryService.getCategory(request.getCategoryId());
         }
 
+        // Delete old image if thumbnail changed
+        if (article.getThumbnail() != null && !article.getThumbnail().equals(request.getThumbnail())) {
+            uploadService.deleteFile(article.getThumbnail());
+        }
+
         article.setTitle(request.getTitle());
         article.setExcerpt(request.getExcerpt());
         article.setContent(request.getContent());
@@ -102,6 +108,12 @@ public class ArticleService {
     @Transactional
     public void deleteArticle(String id) {
         Article article = getArticle(id);
+
+        // Delete image from Cloudinary
+        if (article.getThumbnail() != null) {
+            uploadService.deleteFile(article.getThumbnail());
+        }
+
         articleRepository.delete(article);
     }
 
