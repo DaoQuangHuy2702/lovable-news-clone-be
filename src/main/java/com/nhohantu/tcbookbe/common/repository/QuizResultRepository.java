@@ -17,4 +17,7 @@ public interface QuizResultRepository extends JpaRepository<QuizResult, String> 
 
     org.springframework.data.domain.Page<QuizResult> findByQuizIdAndIsDeletedFalse(String quizId,
             org.springframework.data.domain.Pageable pageable);
+
+    org.springframework.data.domain.Page<QuizResult> findAllByIsDeletedFalse(
+            org.springframework.data.domain.Pageable pageable);
 }

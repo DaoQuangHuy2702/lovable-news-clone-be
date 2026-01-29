@@ -28,7 +28,7 @@ public class QuizResultService {
     }
 
     public Page<QuizResult> getAllResults(Pageable pageable) {
-        return quizResultRepository.findAll(pageable);
+        return quizResultRepository.findAllByIsDeletedFalse(pageable);
     }
 
     public Page<QuizResult> getAllResultsByQuizId(String quizId, Pageable pageable) {
