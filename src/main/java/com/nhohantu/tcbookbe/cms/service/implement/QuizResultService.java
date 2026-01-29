@@ -20,11 +20,11 @@ public class QuizResultService {
     }
 
     public List<QuizResult> getLeaderboard() {
-        return quizResultRepository.findTopRankings();
+        return quizResultRepository.findTop3Rankings();
     }
 
     public List<QuizResult> getLeaderboardByQuizId(String quizId) {
-        return quizResultRepository.findTopRankingsByQuizId(quizId);
+        return quizResultRepository.findTop3RankingsByQuizId(quizId);
     }
 
     public Page<QuizResult> getAllResults(Pageable pageable) {

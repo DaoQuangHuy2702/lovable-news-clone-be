@@ -10,10 +10,10 @@ import java.util.List;
 public interface QuizResultRepository extends JpaRepository<QuizResult, String> {
 
     @Query("SELECT q FROM QuizResult q WHERE q.isDeleted = false ORDER BY q.score DESC, q.completionTime ASC, q.createdAt ASC")
-    List<QuizResult> findTopRankings();
+    List<QuizResult> findTop3Rankings();
 
     @Query("SELECT q FROM QuizResult q WHERE q.quiz.id = :quizId AND q.isDeleted = false ORDER BY q.score DESC, q.completionTime ASC, q.createdAt ASC")
-    List<QuizResult> findTopRankingsByQuizId(String quizId);
+    List<QuizResult> findTop3RankingsByQuizId(String quizId);
 
     org.springframework.data.domain.Page<QuizResult> findByQuizIdAndIsDeletedFalse(String quizId,
             org.springframework.data.domain.Pageable pageable);
