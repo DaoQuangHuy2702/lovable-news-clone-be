@@ -2,13 +2,16 @@ package com.nhohantu.tcbookbe.common.service;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.nhohantu.tcbookbe.cms.dto.response.CloudinarySignatureResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.TreeMap;
 
 @Service
 @Slf4j
@@ -16,6 +19,15 @@ import java.util.Map;
 public class UploadService {
 
     private final Cloudinary cloudinary;
+
+    @Value("${cloudinary.cloud-name}")
+    private String cloudName;
+
+    @Value("${cloudinary.api-key}")
+    private String apiKey;
+
+    @Value("${cloudinary.api-secret}")
+    private String apiSecret;
 
     /**
      * Uploads a file to Cloudinary and returns the full secure URL
@@ -25,8 +37,13 @@ public class UploadService {
      */
     public String uploadFile(MultipartFile file) {
         try {
-            Map uploadResult = cloudinary.uploader().upload(file.getBytes(),
-                    ObjectUtils.asMap("resource_type", "auto"));
+            // Using uploadLarge for more robustness with large files
+            // and using input stream to avoid loading entire file into memory
+            Map uploadResult = cloudinary.uploader().uploadLarge(file.getInputStream(),
+                    ObjectUtils.asMap(
+                            "resource_type", "auto",
+                            "chunk_size", 20000000 // 20MB chunks
+                    ));
 
             String url = (String) uploadResult.get("secure_url");
             log.info("Successfully uploaded file to Cloudinary. URL: {}", url);
@@ -88,5 +105,20 @@ public class UploadService {
             log.error("Could not extract public_id from URL: {}", url);
         }
         return null;
+    }
+
+    public CloudinarySignatureResponse generateSignature() {
+        long timestamp = System.currentTimeMillis() / 1000L;
+        Map<String, Object> paramsToSign = new TreeMap<>();
+        paramsToSign.put("timestamp", timestamp);
+
+        String signature = cloudinary.apiSignRequest(paramsToSign, apiSecret);
+
+        return CloudinarySignatureResponse.builder()
+                .signature(signature)
+                .timestamp(timestamp)
+                .apiKey(apiKey)
+                .cloudName(cloudName)
+                .build();
     }
 }

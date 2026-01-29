@@ -26,6 +26,9 @@ spring:
   devtools:
     restart:
       enabled: false
+  mvc:
+    async:
+      request-timeout: 600000 # 10 minutes
 
 cloudinary:
   cloud-name: ${CLOUDINARY_CLOUD_NAME}
@@ -34,5 +37,6 @@ cloudinary:
 
 server:
   port: 8080
+  connection-timeout: 600000 # 10 minutes
   servlet:
     context-path: /api/v1
