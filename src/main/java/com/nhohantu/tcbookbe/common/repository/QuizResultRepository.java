@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 public interface QuizResultRepository extends JpaRepository<QuizResult, String> {
 
-        @Query(value = "SELECT * FROM quiz_results q WHERE q.is_deleted = false AND (:quizId IS NULL OR q.quiz_id = :quizId) ORDER BY q.score DESC, q.completion_time ASC, q.created_at ASC LIMIT 3", nativeQuery = true)
-        List<QuizResult> findTop3Rankings(@Param("quizId") String quizId);
+        @Query("SELECT q FROM QuizResult q WHERE q.isDeleted = false AND (:quizId IS NULL OR q.quiz.id = :quizId)")
+        Page<QuizResult> findLeaderboard(@Param("quizId") String quizId, Pageable pageable);
 
         Page<QuizResult> findByQuizIdAndIsDeletedFalse(String quizId, Pageable pageable);
 
