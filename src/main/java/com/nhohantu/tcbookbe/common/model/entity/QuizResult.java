@@ -1,6 +1,6 @@
 package com.nhohantu.tcbookbe.common.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nhohantu.tcbookbe.common.model.base.entity.BaseModel;
 import jakarta.persistence.Column;
@@ -56,6 +56,6 @@ public class QuizResult extends BaseModel {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "quiz_id")
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Quiz quiz;
 }
