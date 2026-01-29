@@ -26,7 +26,7 @@ public class QuizService {
     private final OptionRepository optionRepository;
 
     public Page<Quiz> getAllQuizzes(Pageable pageable) {
-        return quizRepository.findAll(pageable);
+        return quizRepository.findAllByIsDeletedFalse(pageable);
     }
 
     public Quiz getQuiz(String id) {
