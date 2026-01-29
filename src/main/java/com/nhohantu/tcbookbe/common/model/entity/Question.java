@@ -1,5 +1,7 @@
 package com.nhohantu.tcbookbe.common.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nhohantu.tcbookbe.common.model.base.entity.BaseModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,6 +22,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "quiz_questions")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Question extends BaseModel {
 
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
@@ -27,5 +30,6 @@ public class Question extends BaseModel {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "quiz_id", nullable = false)
+    @JsonIgnore
     private Quiz quiz;
 }
