@@ -4,7 +4,6 @@ import com.nhohantu.tcbookbe.common.model.entity.QuizResult;
 import com.nhohantu.tcbookbe.common.repository.QuizResultRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,11 +20,11 @@ public class QuizResultService {
     }
 
     public List<QuizResult> getLeaderboard() {
-        return quizResultRepository.findTop3Rankings(PageRequest.of(0, 3));
+        return quizResultRepository.findTop3Rankings(null);
     }
 
     public List<QuizResult> getLeaderboardByQuizId(String quizId) {
-        return quizResultRepository.findTop3RankingsByQuizId(quizId, PageRequest.of(0, 3));
+        return quizResultRepository.findTop3Rankings(quizId);
     }
 
     public Page<QuizResult> getAllResults(Pageable pageable) {
